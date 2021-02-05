@@ -46,8 +46,10 @@ exports.register= async (req, res) => {
 
         if (checkEmail) {
             return res.status(400).send({
-                status: "Registration Failed",
-                message: `Email already exsited`
+                status: "Failed",
+                error : {
+                    message: `Email already exsited`
+                }
             });
         }
 
@@ -79,20 +81,16 @@ exports.register= async (req, res) => {
             status: "Success",
             message: "You succesfully registered",
             data : {
-                email: regis.email,
-                fullname: regis.fullname,
-                token
+                chanel : {
+                    email: regis.email,
+                    role: "user",
+                    token                    
+                }
             },
         });
 
     } catch (err) {
-        console.log(err)
-        res.status(500).send({
-            status : "Request Failed",
-            error : {
-                message : "Server Error"
-            }
-        });
+        catchError(err, res)
     }
 }
 
