@@ -1,4 +1,5 @@
 const express = require('express');
+const routes = require('./src/routes/index');
 
 const app = express();
 
@@ -6,6 +7,8 @@ const app = express();
 app.use(express.json());
 
 const port = 5000;
+
+app.use("/api/v1",routes);
 
 app.get('/', (req, res) => {
     res.send("Express Running");
