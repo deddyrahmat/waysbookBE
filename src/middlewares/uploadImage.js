@@ -1,15 +1,23 @@
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const express = require('express');
 const multer = require('multer');
 
+cloudinary.config({
+    cloud_name: "dhvfmcpzw",
+    api_key: "442785371636853",
+    api_secret: "4WMBAqQwAFvUgvMNZtyjZxZ3y_w",
+});
 
 exports.uploadFile = (fileEpub) => {
 
-    const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-        cb(null, "uploads")
-        },
-        filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname);
+    const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: async (req, file) => {
+        return {
+            folder: 'windowofworld',
+            format: "epub"
+        };
         },
     });
 

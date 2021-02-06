@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     isbn: DataTypes.STRING,
     about: DataTypes.TEXT,
     bookFile: DataTypes.STRING,
-    cloudinary_id: DataTypes.STRING
+    // cloudinary_id: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Book',

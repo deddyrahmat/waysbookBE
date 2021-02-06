@@ -3,13 +3,14 @@ const Joi = require('joi');
 const bookValidation = data => {
     const schema = Joi.object({
         title: Joi.string().min(1).required(),
-        publicationDate: Joi.date().required(),
+        publicationDate: Joi.string().min(1).required(),
+        // publicationDate: Joi.date().required(),
         pages: Joi.number().required(),
         author: Joi.string().min(1).required(),
         isbn: Joi.string().min(1).required(),
-        about: Joi.string().min(1).required(),
-        bookFile: Joi.string().required(),
-        cloudinary_id: Joi.string().required(),
+        about: Joi.string().min(1).required()
+        // bookFile: Joi.array().required(),
+        // cloudinary_id: Joi.string().required(),
     });
 
     return schema.validate(data, {

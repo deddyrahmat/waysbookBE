@@ -22,8 +22,9 @@ exports.getUsers = async (req,res) => {
         if (!Users) {
             return res.status(400).send({
                 status : "Server Error",
-                message : "Data Users Empty",
-                data : {users : []}
+                error : {
+                    message : "Data Users Not Found"
+                }
             })
         }
 

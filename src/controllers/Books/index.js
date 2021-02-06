@@ -1,16 +1,180 @@
 // data book from model Book
 const {Book} = require('../../../models');
 
+// delete file
+const fs = require('fs');
+
 // memanggil fungsi validation form
 const formValidation = require('../../middlewares/formValidation');
+
+const catchError = (err, res) => {
+    console.log(err);
+    return res.status(500).send({
+        status : "Request Failed",
+        error : {
+            message : "Server Error"
+        }
+    })
+}
+
+exports.getBooks = async (req, res) => {
+    try {
+        const Books = await Book.findAll({
+            attributes : {
+                exclude : ["createdAt","updatedAt"]
+            }
+        });
+
+        if (!Books) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Book Not Found"
+                }
+            })
+        }
+
+        res.send({
+            statue:"Success",
+            message:"Get Data Books Success",
+            data : {Books}
+        });
+    } catch (err) {
+        catchError(err, res)
+    }
+}
+
+exports.getBookById = async (req, res) => {
+    try {
+        // tangkap data id dari parameter
+        const {id} = req.params;
+
+        const book = await Book.findOne({
+            where : {
+                id
+            }
+        });
+
+        if (!book) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Book Not Found"
+                }
+            })
+        }
+
+        res.send({
+            statue:"Success",
+            message:"Delete Data Book Success",
+            data : {book}
+        });
+    } catch (err) {
+        catchError(err, res)
+    }
+}
+
+exports.updateBook = async (req, res) => {
+    try {
+        // tangkap data id dari parameter
+        const {id} = req.params;
+
+        const {body} = req;
+
+        console.log("hasil body", body);
+        const BookById = await Book.findOne({
+            where : {
+                id
+            } 
+        });
+
+        if (!BookById) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Book Not Found"
+                }
+            })
+        }
+
+        const updateBook = await Book.update(body, {
+            where : {
+                id
+            }
+        })
+
+        if (!updateBook) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Book Not Found"
+                }
+            })
+        }
+
+        const book = await Book.findOne({
+            where : {
+                id
+            }
+        });
+
+        res.send({
+            statue:"Success",
+            message:"Update Data Book Success",
+            data : {book}
+        });
+    } catch (err) {
+        catchError(err, res)
+    }
+}
+
+
+exports.deleteBook = async (req, res) => {
+    try {
+        // tangkap data id dari parameter
+        const {id} = req.params;
+
+        const BookById = await Book.findOne({
+            where : {
+                id
+            } 
+        });
+
+        if (!BookById) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Book Not Found"
+                }
+            })
+        }
+
+        // delete a file
+        fs.unlink(`${BookById.bookFile}`, (err) => {
+            if (err) {
+                throw err;
+            }
+        });
+
+        const deleteBook = await Book.destroy({
+            where : {
+                id
+            }
+        })
+
+        res.send({
+            statue:"Success",
+            message:`Data Book id ${id} Success Deleted`,
+            data : {id}
+        });
+    } catch (err) {
+        catchError(err, res)
+    }
+}
 
 exports.storeBook = async (req, res) => {
     try {
         const {body, files} = req;
-
-        console.log("form validation function", formValidation);
-
-        console.log("file dari book",files);
 
         const {error} =  formValidation.bookValidation(body);
 
@@ -23,12 +187,12 @@ exports.storeBook = async (req, res) => {
             })
         }
 
-        if (files.length > 0) {
-            const uploadBook = files.map( async (filebook) => {
-                // const result = await cloudinary.uploader.upload(filebook.path);//harus path karna menangkap data path saja
-                const book = await Book.create({...body, bookFile: filebook.path, cloudinary_id: filebook.filename, });
-            })
-
+        if (files.bookFile.length > 0) {
+            // const uploadBook = files.bookFile.map( async (filebook) => {
+            //     // const result = await cloudinary.uploader.upload(filebook.path);//harus path karna menangkap data path saja
+            // })
+            const uploadBook = await Book.create({...body, bookFile: files.bookFile[0].path });
+            
             console.log("upload book ke cloud", uploadBook);
 
             if (uploadBook) {
@@ -43,7 +207,7 @@ exports.storeBook = async (req, res) => {
                 return res.status(400).send({
                 status : "validation error",
                 error : {
-                    message : "upload failed"
+                    message : "Upload failed"
                 }
             })
             }
@@ -52,18 +216,12 @@ exports.storeBook = async (req, res) => {
         res.status(400).send({
             status : "validation error",
             error : {
-                message : "Image Not Found"
+                message : "File Not Found"
             }
         }
         )
 
     } catch (err) {
-        console.log(err)
-        res.status(500).send({
-            status : "Request Failed",
-            error : {
-                message : "Server Error"
-            }
-        })
+        catchError(err, res)
     }
 }
