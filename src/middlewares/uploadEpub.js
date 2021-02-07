@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 
 
-exports.uploadFile = (fileEpub) => {
+exports.uploadEpub = (fileEpub) => {
 
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {

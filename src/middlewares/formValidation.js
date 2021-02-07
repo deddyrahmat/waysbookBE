@@ -42,6 +42,17 @@ const loginValidation = data => {
     })
 }
 
+// const transactionValidation = data => {
+//     const schema = Joi.object({
+//         userId: Joi.number().min(1).required()
+//     });
+
+//     return schema.validate(data, {
+//         abortEarly:false
+//     })
+// }
+
+
 module.exports = {
     bookValidation, registerValidation, loginValidation
 }

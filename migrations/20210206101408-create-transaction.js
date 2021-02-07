@@ -1,33 +1,40 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Books', {
+    await queryInterface.createTable('Transactions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      transferProof: {
         type: Sequelize.STRING
       },
-      publicationDate: {
-        type: Sequelize.DATE
+      cloudinary_id: {
+        type: Sequelize.STRING
       },
-      pages: {
+      remainingActive: {
         type: Sequelize.INTEGER
       },
-      author: {
+      userStatus: {
         type: Sequelize.STRING
       },
-      isbn: {
+      paymentStatus: {
         type: Sequelize.STRING
       },
-      about: {
+      descCancel: {
         type: Sequelize.TEXT
-      },
-      bookFile: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -40,6 +47,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Books');
+    await queryInterface.dropTable('Transactions');
   }
 };

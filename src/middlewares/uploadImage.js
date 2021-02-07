@@ -9,24 +9,24 @@ cloudinary.config({
     api_secret: "4WMBAqQwAFvUgvMNZtyjZxZ3y_w",
 });
 
-exports.uploadFile = (fileEpub) => {
+exports.uploadImage = (image) => {
 
     const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: async (req, file) => {
         return {
             folder: 'windowofworld',
-            format: "epub"
+            // format: ["jpg","jpeg","png"]
         };
         },
     });
 
     const fileFilter = function (req, file, cb) {
-        if (!file.originalname.match(/\.(epub)$/)) {
+        if (!file.originalname.match(/\.(jpg|JPG|png|PNG|jpeg|JPEG)$/)) {
             req.fileValidationError = {
-            message: "Only file EPUB files are allowed!"
+            message: "Only file image files are allowed!"
             }
-            return cb(new Error("Only file EPUB are allowed!"), false)
+            return cb(new Error("Only file image are allowed!"), false)
         }
         cb(null, true)
     }
@@ -41,7 +41,7 @@ exports.uploadFile = (fileEpub) => {
         },
     }).fields([
         {
-        name: fileEpub,
+        name: image,
         maxCount: 1,
         }
     ])
@@ -56,7 +56,7 @@ exports.uploadFile = (fileEpub) => {
         //munculkan error jika file tidak disediakan
         if (!req.files && !err)
             return res.status(400).send({
-            message: "Please select file to upload",
+            message: "Please select image to upload",
             })
 
         //munculkan error jika melebihi max size

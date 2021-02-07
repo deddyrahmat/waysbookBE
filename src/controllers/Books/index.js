@@ -66,7 +66,7 @@ exports.getBookById = async (req, res) => {
 
         res.send({
             statue:"Success",
-            message:"Delete Data Book Success",
+            message:"Data Book Success",
             data : {book}
         });
     } catch (err) {
@@ -127,7 +127,6 @@ exports.updateBook = async (req, res) => {
         catchError(err, res)
     }
 }
-
 
 exports.deleteBook = async (req, res) => {
     try {
