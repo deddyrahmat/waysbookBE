@@ -24,7 +24,8 @@ exports.auth = (req, res, next) => {
     }
 
     try {
-        const privateKey = "windowofworld";
+        // const privateKey = "windowofworld";
+        const privateKey = process.env.JWT_KEY;
         const verified = jwt.verify(token, privateKey);
 
         //tambahkan request user sehingga bisa diakses di next function, middleware, etc
