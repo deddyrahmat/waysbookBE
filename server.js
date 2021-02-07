@@ -1,6 +1,10 @@
 const express = require('express');
 const routes = require('./src/routes/index');
 
+
+//instatiate cors module
+var cors = require('cors')
+
 const app = express();
 
 app.use(cors());
