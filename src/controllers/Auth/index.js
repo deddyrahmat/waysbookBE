@@ -70,7 +70,6 @@ exports.register= async (req, res) => {
 
         // private key for token
         // const privateKey = "windowofworld";
-        // const privateKey = {use_env_variable: "JWT_KEY"};
         const privateKey = process.env.JWT_KEY;
 
         // proses pembuatan token dengan jsonwebtoken
@@ -155,8 +154,7 @@ exports.login = async (req, res) => {
         // buat token
         
         // private key for token
-        const privateKey = {use_env_variable: "JWT_KEY"};
-        // const privateKey = process.env.JWT_KEY;
+        const privateKey = process.env.JWT_KEY;
         // const privateKey = "windowofworld";
 
         const token = jwt.sign({
