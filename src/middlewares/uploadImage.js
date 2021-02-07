@@ -4,9 +4,9 @@ const express = require('express');
 const multer = require('multer');
 
 cloudinary.config({
-    cloud_name: "dhvfmcpzw",
-    api_key: "442785371636853",
-    api_secret: "4WMBAqQwAFvUgvMNZtyjZxZ3y_w",
+    cloud_name: {use_env_variable: "cloud_name"},
+    api_key: {use_env_variable: "api_key"},
+    api_secret: {use_env_variable: "api_secret"},
 });
 
 exports.uploadImage = (image) => {
