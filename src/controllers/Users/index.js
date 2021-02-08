@@ -39,6 +39,38 @@ exports.getUsers = async (req,res) => {
     }
 }
 
+exports.getUserById = async (req, res) => {
+    try {
+        // simpan id user dari middleware auth
+    const {id} = req.verified;
+
+    // cek data user
+    const user = await User.findOne({
+        where : {
+            id
+        }
+    });
+
+    if (!user) {
+        return res.status(400).send({
+            status : "Failed",
+            error : {
+                message : "User Not Found"
+            }
+        });
+    }
+
+    res.send({
+        status : "Success",
+        message : "Get Data User Successfully",
+        data  : {user}
+    });
+
+    } catch (err) {
+        catchError(err, res)
+    }
+}
+
 exports.deleteUser = async (req, res) => {
     try {
         // tangkap data id dari parameter

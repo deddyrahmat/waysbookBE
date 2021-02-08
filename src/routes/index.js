@@ -18,6 +18,7 @@ const {
 // Users
 const {
     getUsers, 
+    getUserById,
     deleteUser
 } = require('../controllers/Users');
 
@@ -48,6 +49,7 @@ router.post('/login', login)
 
 // Users
 router.get('/users', getUsers);
+router.get('/user', auth, getUserById);
 router.delete('/user/:id', auth, isAdmin, deleteUser);
 
 // Books

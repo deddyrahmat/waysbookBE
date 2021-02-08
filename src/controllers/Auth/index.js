@@ -161,8 +161,6 @@ exports.login = async (req, res) => {
             id:account.id
         }, privateKey);
 
-        // data role user yang akan dikirim sebagai response
-        const role = account.role;
 
         // responses login dengan token
         res.send({
@@ -170,9 +168,10 @@ exports.login = async (req, res) => {
             message : "Login Success",
             data : {
                 chanel : {
+                    id : account.id,
                     email,
                     token,
-                    role
+                    role : account.role
                 }
             }
         });
