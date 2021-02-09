@@ -42,17 +42,17 @@ const loginValidation = data => {
     })
 }
 
-// const transactionValidation = data => {
-//     const schema = Joi.object({
-//         userId: Joi.number().min(1).required()
-//     });
+const transactionValidation = data => {
+    const schema = Joi.object({
+        numberAccount: Joi.string().min(1).required()
+    });
 
-//     return schema.validate(data, {
-//         abortEarly:false
-//     })
-// }
+    return schema.validate(data, {
+        abortEarly:false
+    })
+}
 
 
 module.exports = {
-    bookValidation, registerValidation, loginValidation
+    bookValidation, registerValidation, loginValidation, transactionValidation
 }

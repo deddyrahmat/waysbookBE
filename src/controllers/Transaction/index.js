@@ -165,8 +165,16 @@ exports.storeTransaction = async (req, res) => {
 
         const {body, files} = req;
 
-        console.log("body input", body);
-        console.log("body input", body.numberAccount);
+        const {error} =  formValidation.transactionValidation(body);
+
+        if (error) {
+            return res.status(400).send({
+                status : "validation error",
+                error : {
+                    message : error.details.map((error) => error.message)
+                }
+            })
+        }
 
         if (files.transferProof.length > 0) {
             // const transaction = files.transferProof.map( async (transferImage) => {
