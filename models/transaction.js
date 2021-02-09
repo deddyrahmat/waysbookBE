@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Transaction.init({
     userId: DataTypes.INTEGER,
+    numberAccount: DataTypes.STRING,
     transferProof: DataTypes.STRING,
     cloudinary_id: DataTypes.STRING,
     remainingActive: DataTypes.INTEGER,

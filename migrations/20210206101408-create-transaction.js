@@ -18,6 +18,9 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      numberAccount: {
+        type: Sequelize.STRING
+      },
       transferProof: {
         type: Sequelize.STRING
       },
