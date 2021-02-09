@@ -166,6 +166,7 @@ exports.storeTransaction = async (req, res) => {
         const {body, files} = req;
 
         console.log("body input", body);
+        console.log("body input", body.numberAccount);
 
         if (files.transferProof.length > 0) {
             // const transaction = files.transferProof.map( async (transferImage) => {
