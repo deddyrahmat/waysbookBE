@@ -83,6 +83,9 @@ exports.register= async (req, res) => {
             message: "You succesfully registered",
             data : {
                 chanel : {
+                    id : regis.id,
+                    fullname,
+                    avatar : regis.avatar,
                     email: regis.email,
                     role: "user",
                     token                    
