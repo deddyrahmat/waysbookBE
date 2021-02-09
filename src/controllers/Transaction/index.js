@@ -171,8 +171,8 @@ exports.storeTransaction = async (req, res) => {
         if (files.transferProof.length > 0) {
             // const transaction = files.transferProof.map( async (transferImage) => {
                 const createTransaction = await Transaction.create({
+                    ...body,
                     userId:id, 
-                    numberAccount : body.numberAccount,
                     transferProof: files.transferProof[0].path,
                     cloudinary_id :  files.transferProof[0].filename,
                     remainingActive : 0,
