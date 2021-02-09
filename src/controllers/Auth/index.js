@@ -169,6 +169,8 @@ exports.login = async (req, res) => {
             data : {
                 chanel : {
                     id : account.id,
+                    fullname : account.fullname,
+                    avatar : account.avatar,
                     email,
                     token,
                     role : account.role
