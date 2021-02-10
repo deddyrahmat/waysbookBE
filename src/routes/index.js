@@ -19,7 +19,8 @@ const {
 const {
     getUsers, 
     getUserById,
-    deleteUser
+    deleteUser,
+    checkAuth
 } = require('../controllers/Users');
 
 
@@ -46,6 +47,7 @@ const {
 // Auth
 router.post('/register', register)
 router.post('/login', login)
+router.get("/check-auth", auth, checkAuth);
 
 // Users
 router.get('/users', getUsers);

@@ -185,3 +185,30 @@ exports.login = async (req, res) => {
         catchError(err, res);
     }
 }
+
+
+exports.checkAuth = async (req, res) => {
+    try {
+        const userId = req.verified.id;
+        const user = await User.findOne({
+        where: {
+            id: userId,
+        },
+        });
+
+        res.send({
+        status: responseSuccess,
+        message: "User Valid",
+        data: user,
+        });
+    } catch (err) {
+        //error here
+        console.log(err);
+        return res.status(500).send({
+        status : "Failed",
+        error: {
+            message: "Server Error",
+        },
+        });
+    }
+};
