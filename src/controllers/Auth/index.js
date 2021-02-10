@@ -82,7 +82,7 @@ exports.register= async (req, res) => {
             status: "Success",
             message: "You succesfully registered",
             data : {
-                chanel : {
+                user : {
                     id : regis.id,
                     fullname,
                     avatar : regis.avatar,
@@ -170,7 +170,7 @@ exports.login = async (req, res) => {
             status : "Success",
             message : "Login Success",
             data : {
-                chanel : {
+                user : {
                     id : account.id,
                     fullname : account.fullname,
                     avatar : account.avatar,

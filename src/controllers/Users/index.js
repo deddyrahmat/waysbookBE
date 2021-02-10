@@ -15,7 +15,7 @@ exports.getUsers = async (req,res) => {
     try {
         const Users = await User.findAll({
             attributes:{
-                exclude:["createdAt","updatedAt","password"]
+                exclude:["createdAt","updatedAt","password","cloudinary_id"]
             }
         })
 
@@ -48,6 +48,9 @@ exports.getUserById = async (req, res) => {
     const user = await User.findOne({
         where : {
             id
+        },
+        attributes:{
+            exclude:["createdAt","updatedAt","password","cloudinary_id"]
         }
     });
 

@@ -194,7 +194,10 @@ exports.storeTransaction = async (req, res) => {
             const transaction = await Transaction.findOne({
                 where : {
                     id : createTransaction.id
-                }
+                },
+                attributes:{
+                exclude:["createdAt","updatedAt","cloudinary_id"]
+            }
             })
             
 

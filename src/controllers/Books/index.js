@@ -52,6 +52,9 @@ exports.getBookById = async (req, res) => {
         const book = await Book.findOne({
             where : {
                 id
+            },
+            attributes:{
+                exclude:["createdAt","updatedAt"]
             }
         });
 
@@ -115,6 +118,9 @@ exports.updateBook = async (req, res) => {
         const book = await Book.findOne({
             where : {
                 id
+            },
+            attributes:{
+                exclude:["createdAt","updatedAt"]
             }
         });
 
@@ -199,7 +205,16 @@ exports.storeBook = async (req, res) => {
                         status : "Success",
                         message : "Book Success Created",
                         data : {
-                            uploadBook
+                            book : {
+                                id : uploadBook.id,
+                                title : uploadBook.title,
+                                publicationData : uploadBook.publicationData,
+                                pages : uploadBook.pages,
+                                author : uploadBook.author,
+                                isbn : uploadBook.isbn,
+                                about : uploadBook.about,
+                                bookFile : uploadBook.bookFile
+                            }
                         }
                     });
             }else{
