@@ -194,7 +194,9 @@ exports.checkAuth = async (req, res) => {
         const user = await User.findOne({
             where: {
                 id: userId,
-            },
+            },attributes:{
+            exclude:["createdAt","updatedAt","password","cloudinary_id"]
+        }
         });
 
         console.log("data user ", user);
