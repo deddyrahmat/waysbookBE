@@ -12,7 +12,8 @@ const {uploadImage} = require('../middlewares/uploadImage');
 // Auth
 const {
     register,
-    login
+    login,
+    checkAuth
 } = require('../controllers/Auth');
 
 // Users
@@ -20,7 +21,6 @@ const {
     getUsers, 
     getUserById,
     deleteUser,
-    checkAuth
 } = require('../controllers/Users');
 
 
@@ -45,9 +45,9 @@ const {
 // routing
 
 // Auth
-router.post('/register', register)
-router.post('/login', login)
-router.get("/check-auth", auth, checkAuth);
+router.post('/register', register);
+router.post('/login', login);
+router.get('/check-auth', auth, checkAuth);
 
 // Users
 router.get('/users', getUsers);

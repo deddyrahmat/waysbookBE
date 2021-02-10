@@ -190,14 +190,17 @@ exports.login = async (req, res) => {
 exports.checkAuth = async (req, res) => {
     try {
         const userId = req.verified.id;
+        console.log("user id", userId);
         const user = await User.findOne({
-        where: {
-            id: userId,
-        },
+            where: {
+                id: userId,
+            },
         });
 
+        console.log("data user ", user);
+
         res.send({
-        status: responseSuccess,
+        status: "Success",
         message: "User Valid",
         data: user,
         });
