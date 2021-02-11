@@ -181,6 +181,8 @@ exports.storeBook = async (req, res) => {
     try {
         const {body, files} = req;
 
+        console.log("body books",body);
+        console.log("files books",files);
         const {error} =  formValidation.bookValidation(body);
 
         if (error) {
@@ -196,7 +198,13 @@ exports.storeBook = async (req, res) => {
             // const uploadBook = files.bookFile.map( async (filebook) => {
             //     // const result = await cloudinary.uploader.upload(filebook.path);//harus path karna menangkap data path saja
             // })
-            const uploadBook = await Book.create({...body, bookFile: files.bookFile[0].path });
+            const uploadBook = await Book.create({
+                ...body,
+                bookFile: files.bookFile[0].path,
+                cloudinary_id_bookFile :  files.bookFile[0].filename,
+                thumbnail: files.thumbnail[0].path,
+                cloudinary_id :  files.thumbnail[0].filename,
+            });
             
             console.log("upload book ke cloud", uploadBook);
 
@@ -213,6 +221,7 @@ exports.storeBook = async (req, res) => {
                                 author : uploadBook.author,
                                 isbn : uploadBook.isbn,
                                 about : uploadBook.about,
+                                thumbnail : uploadBook.thumbnail,
                                 bookFile : uploadBook.bookFile
                             }
                         }

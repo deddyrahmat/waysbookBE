@@ -1,4 +1,4 @@
-const {User} = require('../../../models');
+const {User, Transaction} = require('../../../models');
 
 const catchError = (err, res) => {
     console.log(err);
@@ -45,13 +45,26 @@ exports.getUserById = async (req, res) => {
     const {id} = req.verified;
 
     // cek data user
+    // cari data user berdasarkan id login dan hide beberapa data 
+    // lalu tampilkan relasi ke table transaction yang menampilkan 1 row data terbaru berdasarkan id dan hide beberapa data
     const user = await User.findOne({
         where : {
             id
         },
         attributes:{
             exclude:["createdAt","updatedAt","password","cloudinary_id"]
-        }
+        }, 
+        include : [
+            {
+                limit : 1,
+                order: [["id", "DESC"]],
+                model : Transaction,
+                as : "transactions",
+                attributes:{
+                    exclude:["cloudinary_id","createdAt"]
+                }
+            }
+        ]
     });
 
     if (!user) {

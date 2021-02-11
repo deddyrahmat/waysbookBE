@@ -39,7 +39,9 @@ const {
     getTransaction,
     getTransactionById,
     storeTransaction,
-    updateTransaction
+    approvedTransaction,
+    cancelTransaction,
+    expiredTransaction
 } = require('../controllers/Transaction');
 
 // routing
@@ -58,13 +60,15 @@ router.delete('/user/:id', auth, isAdmin, deleteUser);
 router.get('/books', getBooks);
 router.get('/book/:id', getBookById);
 router.patch('/book/:id', auth, isAdmin, uploadEpub("bookFile"), updateBook);
-router.post('/book',auth, isAdmin, uploadEpub("bookFile"),  storeBook);//uploadFile("bookFile"), nama parameter harus sama dengan yang ada di form user
+router.post('/book',auth, isAdmin, uploadImage('thumbnail','bookFile'),  storeBook);//uploadFile("bookFile"), nama parameter harus sama dengan yang ada di form user
 router.delete('/book/:id', deleteBook);
 
 // Transactions
 router.get('/transactions',auth,isAdmin, getTransaction );
 router.get('/transaction/:id',auth,isAdmin, getTransactionById );
 router.post('/transaction',auth, uploadImage('transferProof'), storeTransaction );
-router.patch('/transaction/:id',auth,isAdmin, updateTransaction );
+router.patch('/approved-transaction/:id',auth,isAdmin, approvedTransaction );
+router.patch('/cancel-transaction/:id',auth,isAdmin, cancelTransaction );
+router.patch('/expired-transaction/:id',auth,isAdmin, expiredTransaction );
 
 module.exports= router;

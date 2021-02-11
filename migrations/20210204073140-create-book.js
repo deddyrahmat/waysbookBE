@@ -26,7 +26,16 @@ module.exports = {
       about: {
         type: Sequelize.TEXT
       },
+      thumbnail: {
+        type: Sequelize.STRING
+      },
+      cloudinary_id: {
+        type: Sequelize.STRING
+      },
       bookFile: {
+        type: Sequelize.STRING
+      },
+      cloudinary_id_bookFile: {
         type: Sequelize.STRING
       },
       createdAt: {

@@ -91,7 +91,7 @@ exports.getTransactionById = async (req, res) => {
     }
 }
 
-exports.updateTransaction = async (req, res) => {
+exports.approvedTransaction = async (req, res) => {
     try {
         // tangkap data id dari parameter
         const {id} = req.params;
@@ -115,6 +115,139 @@ exports.updateTransaction = async (req, res) => {
             paymentStatus : "Approved", 
             userStatus:"Active", 
             remainingActive : 30
+        }, {
+            where : {
+                id
+            }
+        })
+
+        if (!upTransaction) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Book Not Found"
+                }
+            })
+        }
+
+        const transaction = await Transaction.findOne({
+            where : {
+                id
+            }, attributes : {
+                exclude : ["cloudinary_id", 'userId', "createdAt", "updatedAt"]
+            }, include : 
+                {
+                    attributes: {
+                        exclude: ['email','gender','phone','address','password', 'avatar','role','cloudinary_id','UserId',"createdAt", "updatedAt"],
+                    },
+                    model : User,
+                    as : "user"
+                }
+            
+        });
+
+        res.send({
+            statue:"Success",
+            message:"Update Data Transaction Success",
+            data : {transaction}
+        });
+    } catch (err) {
+        catchError(err, res)
+    }
+}
+
+exports.cancelTransaction = async (req, res) => {
+    try {
+        // tangkap data id dari parameter
+        const {id} = req.params;
+
+        const {body} = req;
+
+        console.log("req body from cancle transactions", req.body);
+
+        const transactionById = await Transaction.findOne({
+            where : {
+                id
+            } 
+        });
+
+        if (!transactionById) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Transaction Not Found"
+                }
+            })
+        }
+
+        const upTransaction = await Transaction.update({
+            descCancel : body.descCancel, 
+            paymentStatus : "Cancel", 
+            userStatus:"Not Active", 
+        }, {
+            where : {
+                id
+            }
+        })
+
+        if (!upTransaction) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Book Not Found"
+                }
+            })
+        }
+
+        const transaction = await Transaction.findOne({
+            where : {
+                id
+            }, attributes : {
+                exclude : ["cloudinary_id", 'userId', "createdAt", "updatedAt"]
+            }, include : 
+                {
+                    attributes: {
+                        exclude: ['email','gender','phone','address','password', 'avatar','role','cloudinary_id','UserId',"createdAt", "updatedAt"],
+                    },
+                    model : User,
+                    as : "user"
+                }
+            
+        });
+
+        res.send({
+            statue:"Success",
+            message:"Update Data Transaction Success",
+            data : {transaction}
+        });
+    } catch (err) {
+        catchError(err, res)
+    }
+}
+
+exports.expiredTransaction = async (req, res) => {
+    try {
+        // tangkap data id dari parameter
+        const {id} = req.params;
+        
+        const transactionById = await Transaction.findOne({
+            where : {
+                id
+            } 
+        });
+
+        if (!transactionById) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Transaction Not Found"
+                }
+            })
+        }
+
+        const upTransaction = await Transaction.update({
+            paymentStatus : "Cancel", 
+            userStatus:"Not Active", 
         }, {
             where : {
                 id
