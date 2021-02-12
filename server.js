@@ -17,7 +17,7 @@ app.use(express.json());
 const port = process.env.PORT || 5000;
 
 // membuat static url untuk menampilkan file
-app.use("/api/v1/uploads", express.static("uploads"));
+// app.use("/api/v1/uploads", express.static("uploads"));
 
 app.use("/api/v1",routes);
 
