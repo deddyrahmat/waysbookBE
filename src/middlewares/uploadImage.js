@@ -9,7 +9,7 @@ cloudinary.config({
     api_secret: process.env.API_SECRET,
 });
 
-exports.uploadImage = (imageFile, bookFile) => {
+exports.uploadFile = (imageFile, bookFile) => {
 
     const storage = new CloudinaryStorage({
         cloudinary: cloudinary,
