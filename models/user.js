@@ -14,6 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Transaction, {
         as : "transactions", foreignKey : "userId"
       })
+
+      User.belongsToMany(models.Book, {
+        through : {
+          model : "BookUsers",
+          as : "books"
+        }
+      })
     }
   };
   User.init({

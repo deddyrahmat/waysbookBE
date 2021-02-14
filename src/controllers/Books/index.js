@@ -19,13 +19,13 @@ const catchError = (err, res) => {
 
 exports.getBooks = async (req, res) => {
     try {
-        const Books = await Book.findAll({
+        const books = await Book.findAll({
             attributes : {
                 exclude : ["createdAt","updatedAt"]
             }
         });
 
-        if (!Books) {
+        if (!books) {
             return res.status(400).send({
                 status : "Server Error",
                 error : {
@@ -37,7 +37,7 @@ exports.getBooks = async (req, res) => {
         res.send({
             statue:"Success",
             message:"Get Data Books Success",
-            data : {Books}
+            data : {books}
         });
     } catch (err) {
         catchError(err, res)
@@ -194,7 +194,7 @@ exports.storeBook = async (req, res) => {
             })
         }
 
-        if (files.bookFile.length > 0) {
+        // if (files.bookFile.length > 0) {
             // const uploadBook = files.bookFile.map( async (filebook) => {
             //     // const result = await cloudinary.uploader.upload(filebook.path);//harus path karna menangkap data path saja
             // })
@@ -234,7 +234,7 @@ exports.storeBook = async (req, res) => {
                 }
             })
             }
-        }
+        // }
 
         res.status(400).send({
             status : "validation error",

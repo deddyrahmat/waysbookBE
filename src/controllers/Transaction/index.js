@@ -23,7 +23,11 @@ exports.getTransaction = async (req, res) => {
         const transactions = await Transaction.findAll({
             attributes : {
                 exclude : ["cloudinary_id", 'userId', "createdAt", "updatedAt"]
-            }, include : 
+            }, 
+            order : [
+                ["id", "DESC"]
+            ],
+            include : 
                 {
                     attributes: {
                         exclude: ['email','gender','phone','address','password', 'avatar','role','cloudinary_id','UserId',"createdAt", "updatedAt"],

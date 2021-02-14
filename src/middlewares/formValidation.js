@@ -8,9 +8,9 @@ const bookValidation = data => {
         pages: Joi.number().required(),
         author: Joi.string().min(1).required(),
         isbn: Joi.string().min(1).required(),
-        about: Joi.string().min(1).required()
-        // bookFile: Joi.array().required(),
-        // cloudinary_id: Joi.string().required(),
+        about: Joi.string().min(1).required(),
+        // bookFile: Joi.string().min(1).required(),
+        // thumbnail: Joi.string().min(1).required(),
     });
 
     return schema.validate(data, {

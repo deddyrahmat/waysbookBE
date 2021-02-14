@@ -4,9 +4,13 @@ const express = require('express');
 const multer = require('multer');
 
 cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
+    // cloud_name: process.env.CLOUD_NAME,
+    // api_key: process.env.API_KEY,
+    // api_secret: process.env.API_SECRET,
+
+    cloud_name: "dhvfmcpzw",
+    api_key: "442785371636853",
+    api_secret: "4WMBAqQwAFvUgvMNZtyjZxZ3y_w"
 });
 
 exports.uploadFile = (imageFile, bookFile) => {
