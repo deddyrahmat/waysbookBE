@@ -1,8 +1,8 @@
-const {Book, User, BookUser} = require("../../../models");
+const {Book, User, PurchaseBook} = require("../../../models");
 
 exports.getBooksUser = async (req, res) => {
     try {
-        const users = await User.findAll({
+        const purchasebooks = await PurchaseBook.findAll({
             attributes: {
                 exclude: ["password", "createdAt", "updatedAt"],
             },

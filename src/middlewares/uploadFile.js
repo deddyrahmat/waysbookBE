@@ -25,16 +25,16 @@ exports.uploadFile = (imageFile, bookFile) => {
                 // karna file yang diupload berbentuk epub maka tambahkan param dengan type raw
                 // dan hanya mengizikan jenis file type epub dan saat diupload beri ext .epub
                 return {
-                    folder: 'windowofworld',
-                    resource_type: "raw",
-                    allowedFormats: "epub",
-                    format: "epub"
+                    folder: 'waysbooks',
+                    // resource_type: "raw",
+                    allowedFormats: "pdf",
+                    format: "pdf"
                 };                
-            }else if (file.fieldname === "thumbnail" || file.fieldname === "transferProof"){
+            }else if (file.fieldname === "thumbnail" || file.fieldname === "attachment"){
                 // simpan file hasil upload ke folder windowofworld dari clodynary
                 // dan hanya mengizikan jenis file type image dan sisanya otomatis di create cloudinary
                 return {
-                    folder: 'windowofworld',
+                    folder: 'waysbooks',
                     allowedFormats: ["jpg", "jpeg", "png"],
                 };
             }
@@ -53,7 +53,7 @@ exports.uploadFile = (imageFile, bookFile) => {
         }
 
         if (file.fieldname ===  bookFile) {
-            if (!file.originalname.match(/\.(epub|EPUB|ZIP|zip)$/)) {
+            if (!file.originalname.match(/\.(pdf|PDF)$/)) {
                 req.fileValidationError = {
                 message: "Only EPUB files are allowed!"
                 }
@@ -65,7 +65,7 @@ exports.uploadFile = (imageFile, bookFile) => {
         cb(null, true)
     }
 
-    const maxSize = 3 * 1000 * 1000; //Maximum file size 3 MB
+    const maxSize = 5 * 1000 * 1000; //Maximum file size 3 MB
 
     const upload = multer({
         storage,
@@ -101,7 +101,7 @@ exports.uploadFile = (imageFile, bookFile) => {
         if (err) {
             if (err.code === "LIMIT_FILE_SIZE") {
             return res.status(400).send({
-                message: "Max file sized 10MB",
+                message: "Max file sized 5 MB",
             })
             }
             return res.status(400).send(err)

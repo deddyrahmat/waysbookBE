@@ -18,22 +18,16 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      numberAccount: {
-        type: Sequelize.STRING
-      },
-      transferProof: {
+      attachment: {
         type: Sequelize.STRING
       },
       cloudinary_id: {
         type: Sequelize.STRING
       },
-      remainingActive: {
+      totalPayment: {
         type: Sequelize.INTEGER
       },
       userStatus: {
-        type: Sequelize.STRING
-      },
-      paymentStatus: {
         type: Sequelize.STRING
       },
       descCancel: {

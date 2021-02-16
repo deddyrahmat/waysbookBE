@@ -23,8 +23,11 @@ module.exports = {
       isbn: {
         type: Sequelize.STRING
       },
-      about: {
+      description: {
         type: Sequelize.TEXT
+      },
+      price: {
+        type: Sequelize.INTEGER
       },
       thumbnail: {
         type: Sequelize.STRING

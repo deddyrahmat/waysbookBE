@@ -8,7 +8,8 @@ const bookValidation = data => {
         pages: Joi.number().required(),
         author: Joi.string().min(1).required(),
         isbn: Joi.string().min(1).required(),
-        about: Joi.string().min(1).required(),
+        description: Joi.string().min(1).required(),
+        price: Joi.number().required(),
         // bookFile: Joi.string().min(1).required(),
         // thumbnail: Joi.string().min(1).required(),
     });

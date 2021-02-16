@@ -19,13 +19,16 @@ const catchError = (err, res) => {
 
 exports.getBooks = async (req, res) => {
     try {
-        const books = await Book.findAll({
+        const promoBooks = await Book.findAll({
             attributes : {
-                exclude : ["createdAt","updatedAt"]
-            }
+                exclude : ["createdAt","updatedAt", "cloudinary_id", "cloudinary_id_bookFile"]
+            },
+            order : [
+                ["id", "DESC"]
+            ]
         });
 
-        if (!books) {
+        if (!promoBooks) {
             return res.status(400).send({
                 status : "Server Error",
                 error : {
@@ -37,7 +40,7 @@ exports.getBooks = async (req, res) => {
         res.send({
             statue:"Success",
             message:"Get Data Books Success",
-            data : {books}
+            data : {promoBooks}
         });
     } catch (err) {
         catchError(err, res)
@@ -54,7 +57,7 @@ exports.getBookById = async (req, res) => {
                 id
             },
             attributes:{
-                exclude:["createdAt","updatedAt"]
+                exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile"]
             }
         });
 
@@ -220,7 +223,7 @@ exports.storeBook = async (req, res) => {
                                 pages : uploadBook.pages,
                                 author : uploadBook.author,
                                 isbn : uploadBook.isbn,
-                                about : uploadBook.about,
+                                description : uploadBook.description,
                                 thumbnail : uploadBook.thumbnail,
                                 bookFile : uploadBook.bookFile
                             }
@@ -236,13 +239,13 @@ exports.storeBook = async (req, res) => {
             }
         // }
 
-        res.status(400).send({
-            status : "validation error",
-            error : {
-                message : "File Not Found"
-            }
-        }
-        )
+        // res.status(400).send({
+        //     status : "validation error",
+        //     error : {
+        //         message : "File Not Found"
+        //     }
+        // }
+        // )
 
     } catch (err) {
         catchError(err, res)

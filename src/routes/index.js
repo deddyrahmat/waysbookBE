@@ -76,7 +76,7 @@ router.post('/bookuser',auth, storeBooksUser);
 // Transactions
 router.get('/transactions',auth,isAdmin, getTransaction );
 router.get('/transaction/:id',auth,isAdmin, getTransactionById );
-router.post('/transaction',auth, uploadFile('transferProof'), storeTransaction );
+router.post('/transaction',auth, uploadFile('attachment'), storeTransaction );
 router.patch('/approved-transaction/:id',auth,isAdmin, approvedTransaction );
 router.patch('/cancel-transaction/:id',auth,isAdmin, cancelTransaction );
 router.patch('/expired-transaction/:id',auth,isAdmin, expiredTransaction );

@@ -15,16 +15,16 @@ module.exports = (sequelize, DataTypes) => {
       Transaction.belongsTo(models.User, {
         as : "user", foreignKey:"userId"
       })
+
+      Transaction.hasOne(models.PurchaseBook)
     }
   };
   Transaction.init({
     userId: DataTypes.INTEGER,
-    numberAccount: DataTypes.STRING,
-    transferProof: DataTypes.STRING,
+    attachment: DataTypes.STRING,
     cloudinary_id: DataTypes.STRING,
-    remainingActive: DataTypes.INTEGER,
+    totalPayment: DataTypes.INTEGER,
     userStatus: DataTypes.STRING,
-    paymentStatus: DataTypes.STRING,
     descCancel: DataTypes.TEXT
   }, {
     sequelize,

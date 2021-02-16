@@ -1,4 +1,4 @@
-const {User, Transaction} = require('../../../models');
+const {User, Transaction, PurchaseBook, Book} = require('../../../models');
 
 const catchError = (err, res) => {
     console.log(err);
@@ -54,18 +54,57 @@ exports.getUserById = async (req, res) => {
         attributes:{
             exclude:["createdAt","updatedAt","password","cloudinary_id"]
         }, 
-        include : [
-            {
-                limit : 1,
-                order: [["id", "DESC"]],
-                model : Transaction,
-                as : "transactions",
-                attributes:{
-                    exclude:["cloudinary_id","createdAt"]
-                }
-            }
-        ]
+        // include : [
+        //     {
+        //         order: [["id", "DESC"]],
+        //         model : Transaction,
+        //         as : "purchasesBooks",
+        //         // attributes:[],
+        //         include : [
+        //             {
+        //                 model : PurchaseBook
+        //             }
+        //         ]
+        //     }
+        // ]
     });
+
+    const transactions = await Transaction.findAll({
+            where : {
+                userId : id
+            },
+            attributes:{
+                exclude:["createdAt","updatedAt","cloudinary_id","id", "userId","attachment","userStatus","descCancel","totalPayment"]
+            },
+            order : [
+                ["id", "DESC"]
+            ],
+            include : [
+                {
+                    model : PurchaseBook,
+                    attributes:{
+                        exclude:["id","createdAt","updatedAt","transactionId","TransactionId"]
+                    },
+                    include : {
+                        model : Book,
+                        as : "book",
+                        attributes : {
+                            exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile","BookId"]
+                            // include:["bookId","Book"]
+                        }
+                    }
+                }
+            ]
+        })
+        
+        if (!transactions) {
+            return res.status(400).send({
+                status : "Server Error",
+                error : {
+                    message : "Data Transaction Not Found"
+                }
+            })
+        }
 
     if (!user) {
         return res.status(400).send({
@@ -79,7 +118,19 @@ exports.getUserById = async (req, res) => {
     res.send({
         status : "Success",
         message : "Get Data User Successfully",
-        data  : {user}
+        data  : {
+            user : {
+                id : user.id,
+                fullname : user.fullname,
+                email : user.email,
+                gender : user.gender,
+                phone : user.phone,
+                avatar : user.avatar,
+                purchasesBooks :
+                    transactions
+                
+            }
+        }
     });
 
     } catch (err) {

@@ -13,8 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Book.belongsToMany(models.User, {
         through : {
-          model : "BookUsers"
+          model : "PurchaseBooks"
         }
+      })
+
+      Book.hasMany(models.PurchaseBook, {
+        as : "purchasedBook", foreignKey : "id"
       })
     }
   };
@@ -24,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     pages: DataTypes.INTEGER,
     author: DataTypes.STRING,
     isbn: DataTypes.STRING,
-    about: DataTypes.TEXT,
+    description: DataTypes.TEXT,
+    price: DataTypes.INTEGER,
     thumbnail: DataTypes.STRING,
     cloudinary_id_bookFile: DataTypes.STRING,
     cloudinary_id: DataTypes.STRING,

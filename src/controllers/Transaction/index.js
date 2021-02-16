@@ -1,5 +1,5 @@
 // data book from model Book
-const {Transaction, User} = require('../../../models');
+const {Transaction, User, PurchaseBook, Book} = require('../../../models');
 
 // delete file
 const fs = require('fs');
@@ -21,22 +21,37 @@ exports.getTransaction = async (req, res) => {
     try {
 
         const transactions = await Transaction.findAll({
-            attributes : {
-                exclude : ["cloudinary_id", 'userId', "createdAt", "updatedAt"]
-            }, 
+            attributes:{
+                exclude:["createdAt","updatedAt","cloudinary_id"]
+            },
             order : [
                 ["id", "DESC"]
             ],
-            include : 
+            include : [
                 {
-                    attributes: {
-                        exclude: ['email','gender','phone','address','password', 'avatar','role','cloudinary_id','UserId',"createdAt", "updatedAt"],
-                    },
                     model : User,
-                    as : "user"
+                    as : "user",
+                    attributes:{
+                        exclude:["createdAt","updatedAt","cloudinary_id"]
+                    },
+                },
+                {
+                    model : PurchaseBook,
+                    attributes:{
+                        exclude:["id","createdAt","updatedAt","transactionId","TransactionId"]
+                    },
+                    include : {
+                        model : Book,
+                        as : "book",
+                        attributes : {
+                            exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile","BookId"]
+                            // include:["bookId","Book"]
+                        }
+                    }
                 }
-        });
-
+            ]
+        })
+        
         if (!transactions) {
             return res.status(400).send({
                 status : "Server Error",
@@ -302,29 +317,42 @@ exports.storeTransaction = async (req, res) => {
 
         const {body, files} = req;
 
-        const {error} =  formValidation.transactionValidation(body);
+        const { books } = body;
+        console.log("books", books); 
+        // console.log("books json parse", JSON.parse(books)); 
 
-        if (error) {
-            return res.status(400).send({
-                status : "validation error",
-                error : {
-                    message : error.details.map((error) => error.message)
-                }
-            })
-        }
+        // const {error} =  formValidation.transactionValidation(body);
 
-        if (files.transferProof.length > 0) {
+        // if (error) {
+        //     return res.status(400).send({
+        //         status : "validation error",
+        //         error : {
+        //             message : error.details.map((error) => error.message)
+        //         }
+        //     })
+        // }
+
+        if (files.attachment.length > 0) {
             // const transaction = files.transferProof.map( async (transferImage) => {
                 const createTransaction = await Transaction.create({
                     ...body,
+                    userStatus : "Pending",
                     userId:id, 
-                    transferProof: files.transferProof[0].path,
-                    cloudinary_id :  files.transferProof[0].filename,
-                    remainingActive : 0,
-                    userStatus : "Not Active",
-                    paymentStatus : "Pending"
+                    attachment: files.attachment[0].path,
+                    cloudinary_id :  files.attachment[0].filename,
                 });
-            // })
+
+                books.map(async (book) => {
+                    // console.log("hasil produk : " +book.amount);// id transaksi terbaru : "+ transaction.id
+                    const id = book;
+                    console.log("book json", book);
+                    console.log("id book", id);
+                    
+                    await PurchaseBook.create({
+                        transactionId : createTransaction.id,
+                        bookId : id,
+                    })
+                })
 
             console.log("create transaction terakhir", createTransaction.id);
             
@@ -333,8 +361,17 @@ exports.storeTransaction = async (req, res) => {
                     id : createTransaction.id
                 },
                 attributes:{
-                exclude:["createdAt","updatedAt","cloudinary_id"]
-            }
+                    exclude:["createdAt","updatedAt","cloudinary_id"]
+                },
+                include : [
+                    {
+                        model : User,
+                        as : "user"
+                    },
+                    {
+                        model : PurchaseBook
+                    }
+                ]
             })
             
 
