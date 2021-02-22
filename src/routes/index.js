@@ -32,12 +32,6 @@ const {
     deleteBook
 } = require('../controllers/Books');
 
-// BookUser
-const {
-    getBooksUser,
-    getBooksUserById,
-    storeBooksUser
-} = require('../controllers/BookUsers');
 
 // Transactions
 const {
@@ -45,8 +39,7 @@ const {
     getTransactionById,
     storeTransaction,
     approvedTransaction,
-    cancelTransaction,
-    expiredTransaction
+    cancelTransaction
 } = require('../controllers/Transaction');
 
 // routing
@@ -68,17 +61,11 @@ router.patch('/book/:id', auth, isAdmin, uploadFile("bookFile"), updateBook);
 router.post('/book',auth, isAdmin, uploadFile('thumbnail','bookFile'),  storeBook);//uploadFile("bookFile"), nama parameter harus sama dengan yang ada di form user
 router.delete('/book/:id', deleteBook);
 
-// Bookuser
-router.get('/bookusers', getBooksUser);
-router.get('/bookuser',auth, getBooksUserById);
-router.post('/bookuser',auth, storeBooksUser);
-
 // Transactions
 router.get('/transactions',auth,isAdmin, getTransaction );
 router.get('/transaction/:id',auth,isAdmin, getTransactionById );
 router.post('/transaction',auth, uploadFile('attachment'), storeTransaction );
 router.patch('/approved-transaction/:id',auth,isAdmin, approvedTransaction );
 router.patch('/cancel-transaction/:id',auth,isAdmin, cancelTransaction );
-router.patch('/expired-transaction/:id',auth,isAdmin, expiredTransaction );
 
 module.exports= router;

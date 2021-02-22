@@ -13,13 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Book.belongsToMany(models.User, {
         through : {
+          model : "BookUsers"
+        }
+      })
+
+      Book.belongsToMany(models.Transaction, {
+        through : {
           model : "PurchaseBooks"
         }
       })
 
-      Book.hasMany(models.PurchaseBook, {
-        as : "purchasedBook", foreignKey : "id"
-      })
     }
   };
   Book.init({

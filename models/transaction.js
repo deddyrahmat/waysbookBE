@@ -16,7 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         as : "user", foreignKey:"userId"
       })
 
-      Transaction.hasOne(models.PurchaseBook)
+      Transaction.belongsToMany(models.Book, {
+        through : {
+          model : "PurchaseBooks",
+        },
+        as : "purchasedbooks"
+      })
     }
   };
   Transaction.init({

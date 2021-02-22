@@ -201,7 +201,7 @@ exports.storeBook = async (req, res) => {
             // const uploadBook = files.bookFile.map( async (filebook) => {
             //     // const result = await cloudinary.uploader.upload(filebook.path);//harus path karna menangkap data path saja
             // })
-            const uploadBook = await Book.create({
+            const book = await Book.create({
                 ...body,
                 bookFile: files.bookFile[0].path,
                 cloudinary_id_bookFile :  files.bookFile[0].filename,
@@ -209,43 +209,34 @@ exports.storeBook = async (req, res) => {
                 cloudinary_id :  files.thumbnail[0].filename,
             });
             
-            console.log("upload book ke cloud", uploadBook);
+            console.log("upload book ke cloud", book);
+            
 
-            if (uploadBook) {
-                return res.send({
-                        status : "Success",
-                        message : "Book Success Created",
-                        data : {
-                            book : {
-                                id : uploadBook.id,
-                                title : uploadBook.title,
-                                publicationData : uploadBook.publicationData,
-                                pages : uploadBook.pages,
-                                author : uploadBook.author,
-                                isbn : uploadBook.isbn,
-                                description : uploadBook.description,
-                                thumbnail : uploadBook.thumbnail,
-                                bookFile : uploadBook.bookFile
-                            }
-                        }
-                    });
-            }else{
+            if (!book) {
                 return res.status(400).send({
-                status : "validation error",
-                error : {
-                    message : "Upload failed"
+                    status : "Error",
+                    error : {
+                        message : "Upload failed"
+                    }
+                })
+            }
+
+            const response = await Book.findOne({
+                where : {
+                    id : book.id
+                },
+                attributes : {
+                    exclude : ["cloudinary_id_bookFile","cloudinary_id","createdAt","updatedAt"]
                 }
             })
-            }
-        // }
 
-        // res.status(400).send({
-        //     status : "validation error",
-        //     error : {
-        //         message : "File Not Found"
-        //     }
-        // }
-        // )
+            return res.send({
+                status : "Success",
+                message : "Book Success Created",
+                data : {
+                    book : response
+                }
+            });
 
     } catch (err) {
         catchError(err, res)

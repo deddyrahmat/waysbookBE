@@ -1,29 +1,28 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('PurchaseBooks', {
+    await queryInterface.createTable('BookUsers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      
-      transactionId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Transactions",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
       bookId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "Books",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -40,6 +39,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('PurchaseBooks');
+    await queryInterface.dropTable('BookUsers');
   }
 };

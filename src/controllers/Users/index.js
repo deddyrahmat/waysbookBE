@@ -1,4 +1,4 @@
-const {User, Transaction, PurchaseBook, Book} = require('../../../models');
+const {User, Transaction, PurchaseBook, Book, BookUser} = require('../../../models');
 
 const catchError = (err, res) => {
     console.log(err);
@@ -47,66 +47,27 @@ exports.getUserById = async (req, res) => {
     // cek data user
     // cari data user berdasarkan id login dan hide beberapa data 
     // lalu tampilkan relasi ke table transaction yang menampilkan 1 row data terbaru berdasarkan id dan hide beberapa data
-    const user = await User.findOne({
+    const profile = await User.findOne({
         where : {
             id
         },
         attributes:{
             exclude:["createdAt","updatedAt","password","cloudinary_id"]
-        }, 
-        // include : [
-        //     {
-        //         order: [["id", "DESC"]],
-        //         model : Transaction,
-        //         as : "purchasesBooks",
-        //         // attributes:[],
-        //         include : [
-        //             {
-        //                 model : PurchaseBook
-        //             }
-        //         ]
-        //     }
-        // ]
+        },
+        include :{
+            model : Book,
+            as : "purchasesbooks",
+            attributes : {
+                exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile","BookId"]
+                // include:["bookId","Book"]
+            },
+            through: {
+                attributes: [],
+            },
+        }
     });
 
-    const transactions = await Transaction.findAll({
-            where : {
-                userId : id
-            },
-            attributes:{
-                exclude:["createdAt","updatedAt","cloudinary_id","id", "userId","attachment","userStatus","descCancel","totalPayment"]
-            },
-            order : [
-                ["id", "DESC"]
-            ],
-            include : [
-                {
-                    model : PurchaseBook,
-                    attributes:{
-                        exclude:["id","createdAt","updatedAt","transactionId","TransactionId"]
-                    },
-                    include : {
-                        model : Book,
-                        as : "book",
-                        attributes : {
-                            exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile","BookId"]
-                            // include:["bookId","Book"]
-                        }
-                    }
-                }
-            ]
-        })
-        
-        if (!transactions) {
-            return res.status(400).send({
-                status : "Server Error",
-                error : {
-                    message : "Data Transaction Not Found"
-                }
-            })
-        }
-
-    if (!user) {
+    if (!profile) {
         return res.status(400).send({
             status : "Failed",
             error : {
@@ -115,21 +76,43 @@ exports.getUserById = async (req, res) => {
         });
     }
 
+    // const purchasesbooks = await Transaction.findAll({
+    //         attributes:{
+    //             exclude:["createdAt","updatedAt","cloudinary_id"]
+    //         },
+    //         order : [
+    //             ["id", "DESC"]
+    //         ],
+    //         include : [
+    //             {
+    //                 model : Book,
+    //                 as : "purchasedbooks",
+    //                 attributes : {
+    //                     exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile","BookId"]
+    //                     // include:["bookId","Book"]
+    //                 },
+    //                 through: {
+    //                     attributes: [],
+    //                 },
+    //             }
+
+    //         ]
+    //     })
+        
+    //     if (!purchasesbooks) {
+    //         return res.status(400).send({
+    //             status : "Server Error",
+    //             error : {
+    //                 message : "Data Transaction Not Found"
+    //             }
+    //         })
+    //     }
+
     res.send({
         status : "Success",
         message : "Get Data User Successfully",
         data  : {
-            user : {
-                id : user.id,
-                fullname : user.fullname,
-                email : user.email,
-                gender : user.gender,
-                phone : user.phone,
-                avatar : user.avatar,
-                purchasesBooks :
-                    transactions
-                
-            }
+            profile
         }
     });
 
