@@ -123,7 +123,7 @@ exports.getUserById = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     try {
-        // tangkap data id dari parameter
+        // tangkap data id dari parameter url
         const {id} = req.params;
 
         // cek data user berdasarkan id yang ditangkap
