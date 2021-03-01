@@ -159,3 +159,66 @@ exports.deleteUser = async (req, res) => {
         catchError(err, res)
     }
 }
+
+exports.updateUser = async (req,res) => {
+    try {
+        
+        const {id} = req.verified;
+        const {body,files} = req;
+        console.log("file",files);
+
+        
+        //method FindOne menerima object yaitu where : {id}
+        const getUserById = await User.findOne({
+            where : {
+                id
+            }
+        })
+        
+        if (!getUserById) {
+            return res.status(400).send({
+                status : "Data User Empty",
+                data : {User : null}
+            })
+        }
+
+        // cek user update profil
+        if (files.avatar) {            
+            if (files.avatar.length > 0) {
+                // const result = await cloudinary.uploader.upload(files[0].path);//harus path karna menangkap data path saja
+                body.avatar = files.avatar[0].path;
+                body.cloudinary_id = files.avatar[0].filename
+                // const photo = await User.update({avatar: result.secure_url, cloudinary_id: result.public_id, });
+            }
+        }
+
+        //update menerima 2 parameter yaitu data yang mau diupdate dan where id
+        const user= await User.update(body, {
+            where : {
+                id
+            }
+        })
+
+        //karena yang direturn setelah update cuma id doang
+        //maka kita harus get lagi sebelum dikirim ke sisi client
+        const profile = await User.findOne({
+            where: {
+                id,
+            },attributes:{
+                exclude:["createdAt","updatedAt","password","cloudinary_id"]
+            },
+        });
+
+        //hasil update
+        res.send({
+        status: "Success",
+        message: "Update Success",
+        data: {
+            profile
+        },
+        });
+        
+    } catch (err) {
+        catchError(err, res)
+    }
+}

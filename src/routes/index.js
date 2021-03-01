@@ -20,6 +20,7 @@ const {
     getUsers, 
     getUserById,
     deleteUser,
+    updateUser
 } = require('../controllers/Users');
 
 
@@ -52,6 +53,7 @@ router.get('/check-auth', auth, checkAuth);
 // Users
 router.get('/users', getUsers);
 router.get('/user', auth, getUserById);
+router.patch('/user', auth,uploadFile("avatar"), updateUser);
 router.delete('/user/:id', auth, isAdmin, deleteUser);
 
 // Books

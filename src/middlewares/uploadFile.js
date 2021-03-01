@@ -30,7 +30,7 @@ exports.uploadFile = (imageFile, bookFile) => {
                     allowedFormats: "pdf",
                     format: "pdf"
                 };                
-            }else if (file.fieldname === "thumbnail" || file.fieldname === "attachment"){
+            }else if (file.fieldname === "thumbnail" || file.fieldname === "attachment" || file.fieldname === "avatar"){
                 // simpan file hasil upload ke folder windowofworld dari clodynary
                 // dan hanya mengizikan jenis file type image dan sisanya otomatis di create cloudinary
                 return {
