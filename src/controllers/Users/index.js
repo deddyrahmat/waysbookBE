@@ -58,7 +58,7 @@ exports.getUserById = async (req, res) => {
             model : Book,
             as : "purchasesbooks",
             attributes : {
-                exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile","BookId"]
+                exclude:["createdAt","updatedAt","cloudinary_id", "cloudinary_id_bookFile","BookId"],
                 // include:["bookId","Book"]
             },
             through: {

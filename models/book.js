@@ -14,13 +14,15 @@ module.exports = (sequelize, DataTypes) => {
       Book.belongsToMany(models.User, {
         through : {
           model : "BookUsers"
-        }
+        },
+        foreignKey : "bookId"
       })
 
       Book.belongsToMany(models.Transaction, {
         through : {
           model : "PurchaseBooks"
-        }
+        },
+        foreignKey : "bookId"
       })
 
     }
