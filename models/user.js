@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
           model : "BookUsers",
         },
         as : "purchasesbooks",
-        foreignKey: "bookId"
+        foreignKey: "userId"
       })
     }
   };
